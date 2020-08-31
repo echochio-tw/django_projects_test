@@ -1,10 +1,12 @@
 {% include 'meta/meta.html' %}
-<ul>
-<li><p><a href="/polls">A Polls Application</a></p></li>
-<li><p><a href="/hello">Test the session</a></p>
-<li><p><a href="/autos">Autos CRUD</a></p>
-<li><p><a href="/cats">Cats CRUD</a></p>
-</ul>
+<head>
+    <title>{{ settings.APP_NAME }}</title>
+</head>
+<body>
+    <h1>Welcome to {{ settings.APP_NAME }}</h1>
+    <p>
+    Hello world.
+    </p>
 {% block content %}
 {% if user.is_authenticated %}
   Hello, {{ user.username }}!</br>
@@ -14,3 +16,4 @@
   <a href="{% url 'login' %}">Login Page</a>
 {% endif %}
 {% endblock %}
+</body>
