@@ -51,18 +51,3 @@ urlpatterns += [
     ),
 ]
 
-# Switch to social login if it is configured - Keep for later
-try:
-    from . import github_settings
-    social_login = 'registration/login_social.html'
-    urlpatterns.insert(0,
-        path('accounts/login/', auth_views.LoginView.as_view(template_name=social_login))
-    )
-    print('Using',social_login,'as the login template')
-except:
-    print('Using registration/login.html as the login template')
-
-# References
-
-# https://docs.djangoproject.com/en/3.0/ref/urls/#include
-

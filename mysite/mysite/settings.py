@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'social_django',  
     'home.apps.HomeConfig',  
     'ads.apps.AdsConfig',
-
+    'unesco.apps.UnescoConfig',  # Add
 ]
 
 # When we get to crispy forms :)
@@ -147,51 +147,7 @@ REST_FRAMEWORK = {
 }
 
 # Configure the social login
-try:
-    from . import github_settings 
-    SOCIAL_AUTH_GITHUB_KEY = github_settings.SOCIAL_AUTH_GITHUB_KEY
-    SOCIAL_AUTH_GITHUB_SECRET = github_settings.SOCIAL_AUTH_GITHUB_SECRET
-except:
-    print('When you want to use social login, please see mysite/github_settings-dist.py')
-
-# https://python-social-auth.readthedocs.io/en/latest/configuration/django.html#authentication-backends
-# https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',
-    # 'social_core.backends.twitter.TwitterOAuth',
-    # 'social_core.backends.facebook.FacebookOAuth2',
-
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
-
-# Don't set default LOGIN_URL - let django.contrib.auth set it when it is loaded
-# LOGIN_URL = '/accounts/login'
-
-# https://coderwall.com/p/uzhyca/quickly-setup-sql-query-logging-django
-# https://stackoverflow.com/questions/12027545/determine-if-django-is-running-under-the-development-server
-
-'''  # Leave off for now
-import sys
-if (len(sys.argv) >= 2 and sys.argv[1] == 'runserver'):
-    print('Running locally')
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            }
-        },
-        'loggers': {
-            'django.db.backends': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-            },
-        }
-    }
-'''
 
