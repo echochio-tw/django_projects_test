@@ -1,7 +1,6 @@
 """samples URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -29,6 +28,8 @@ urlpatterns = [
 #    path('ads/', include('ads.urls')),  # Change to ads.urls
     #path('', TemplateView.as_view(template_name='home/main.html')),
     path('admin/', admin.site.urls),  # Keep
+    path('pics/', include('pics.urls')),
+    path('forums/', include('forums.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # Keep
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # Keep
 ]

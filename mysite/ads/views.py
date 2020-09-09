@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from ads.models import Ad, Comment
+from ads.models import Ad
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 
 from ads.forms import CreateForm
@@ -24,13 +24,13 @@ class AdUpdateView(LoginRequiredMixin, View):
     success_url = reverse_lazy('ads:all')
     def get(self, request, pk) :
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
-        form = CreateForm(instance=pic)
+        form = CreateForm(instance=ad)
         ctx = { 'form': form }
         return render(request, self.template_name, ctx)
 
     def post(self, request, pk=None) :
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
-        form = CreateForm(request.POST, request.FILES or None, instance=pic)
+        form = CreateForm(request.POST, request.FILES or None, instance=ad)
 
         if not form.is_valid() :
             ctx = {'form' : form}
@@ -72,19 +72,3 @@ def stream_file(request, pk) :
     response['Content-Length'] = len(ad.picture)
     response.write(ad.picture)
     return response
-
-class CommentCreateView(LoginRequiredMixin, View):
-    def post(self, request, pk) :
-        f = get_object_or_404(Forum, id=pk)
-        comment = Comment(text=request.POST['comment'], owner=request.user, forum=f)
-        comment.save()
-        return redirect(reverse('ads:forum_detail', args=[pk]))
-
-class CommentDeleteView(OwnerDeleteView):
-    model = Comment
-    template_name = "ads/comment_delete.html"
-
-    # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
-    def get_success_url(self):
-        forum = self.object.forum
-        return reverse('ads:forum_detail', args=[forum.id])
