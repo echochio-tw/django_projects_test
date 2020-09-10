@@ -13,4 +13,8 @@ urlpatterns = [
     path('ad/<int:pk>/delete',
         views.AdDeleteView.as_view(success_url=reverse_lazy('ads:all')), name='ad_delete'),
     path('ad_picture/<int:pk>', views.stream_file, name='ad_picture'),
+    path('ad/<int:pk>/commentad',
+        views.CommentadCreateView.as_view(), name='ad_commentad_create'),
+    path('commentad/<int:pk>/delete',
+        views.CommentadDeleteView.as_view(success_url=reverse_lazy('ads')), name='ad_commentad_delete'),
     ]

@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',  
     'ads.apps.AdsConfig',
     'pics.apps.PicsConfig',
-    'forums.apps.ForumsConfig',
     'unesco.apps.UnescoConfig',  # Add
 ]
 
