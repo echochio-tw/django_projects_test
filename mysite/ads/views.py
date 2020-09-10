@@ -7,10 +7,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse
 
-from ads.models import Ad, Commentad
+from ads.models import Ad, Comment
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 
-from ads.forms import CommentadForm
+from ads.forms import CommentForm
 from ads.forms import CreateForm
 
 class AdListView(OwnerListView):
@@ -24,9 +24,9 @@ class AdDetailView(OwnerDetailView):
     template_name = "ads/ad_detail.html"
     def get(self, request, pk) :
         x = Ad.objects.get(id=pk)
-        commentsad = Commentad.objects.filter(ad=x).order_by('-updated_at')
-        commentad_form = CommentadForm()
-        context = { 'ad' : x, 'commentsad': commentsad, 'commentad_form': commentad_form }
+        commentsad = Comment.objects.filter(ad=x).order_by('-updated_at')
+        comment_form = CommentForm()
+        context = { 'ad' : x, 'commentsad': commentsad, 'comment_form': comment_form }
         return render(request, self.template_name, context)
 
 class AdUpdateView(LoginRequiredMixin, View):
@@ -83,15 +83,15 @@ def stream_file(request, pk) :
     response.write(ad.picture)
     return response
 
-class CommentadCreateView(LoginRequiredMixin, View):
+class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk) :
         f = get_object_or_404(Ad, id=pk)
-        commentad = Commentad(text=request.POST['commentad'], owner=request.user, ad=f)
-        commentad.save()
+        comment = Comment(text=request.POST['comment'], owner=request.user, ad=f)
+        comment.save()
         return redirect(reverse('ads:ad_detail', args=[pk]))
 
-class CommentadDeleteView(OwnerDeleteView):
-    model = Commentad
+class CommentDeleteView(OwnerDeleteView):
+    model = Comment
     template_name = "ads/comment_delete.html"
 
     # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id

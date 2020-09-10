@@ -12,7 +12,7 @@ class Ad(models.Model) :
     text = models.TextField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     commentsad = models.ManyToManyField(settings.AUTH_USER_MODEL,
-        through='Commentad', related_name='commentsad_owned')
+        through='Comment', related_name='commentsad_owned')
     # Picture
     picture = models.BinaryField(null=True, editable=True)
     content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
@@ -25,7 +25,7 @@ class Ad(models.Model) :
         return self.title
 
 
-class Commentad(models.Model) :
+class Comment(models.Model) :
     text = models.TextField(
         validators=[MinLengthValidator(3, "Comment must be greater than 3 characters")]
     )
