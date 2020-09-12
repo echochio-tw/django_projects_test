@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'social_django',  
     'home.apps.HomeConfig',  
     'ads.apps.AdsConfig',
+    'favs.apps.FavsConfig',
     'pics.apps.PicsConfig',
     'unesco.apps.UnescoConfig',  # Add
 ]
