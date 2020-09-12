@@ -146,6 +146,17 @@ REST_FRAMEWORK = {
 }
 
 # Configure the social login
+SOCIAL_AUTH_GITHUB_KEY = 'a1235ffaea135278b601'
+SOCIAL_AUTH_GITHUB_SECRET = 'a86270a6164abe6a032b53092d1e94fd597bc7b8'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    # 'social_core.backends.twitter.TwitterOAuth',
+    # 'social_core.backends.facebook.FacebookOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
