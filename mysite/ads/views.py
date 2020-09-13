@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse
 
-from ads.models import Ad, Comment, Fav
+from ads.models import Ad, Comment, Ad, Fav
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 
 from ads.forms import CommentForm
@@ -108,6 +108,8 @@ class CommentDeleteView(OwnerDeleteView):
         ad = self.object.ad
         return reverse('ads:ad_detail', args=[ad.id])
 
+# csrf exemption in class based views
+# https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db.utils import IntegrityError
@@ -117,10 +119,9 @@ class AddFavoriteView(LoginRequiredMixin, View):
     def post(self, request, pk) :
         print("Add PK",pk)
         t = get_object_or_404(Ad, id=pk)
-        print (type(t))
-        ad = Ad(user=request.user, ad=t)
+        fav = Fav(user=request.user, ad=t)
         try:
-            ad.save()  # In case of duplicate key
+            fav.save()  # In case of duplicate key
         except IntegrityError as e:
             pass
         return HttpResponse()
@@ -130,9 +131,8 @@ class DeleteFavoriteView(LoginRequiredMixin, View):
     def post(self, request, pk) :
         print("Delete PK",pk)
         t = get_object_or_404(Ad, id=pk)
-        print (t)
         try:
-            ad = Ad.objects.get(user=request.user, thing=t).delete()
+            fav = Fav.objects.get(user=request.user, ad=t).delete()
         except Ad.DoesNotExist as e:
             pass
 
