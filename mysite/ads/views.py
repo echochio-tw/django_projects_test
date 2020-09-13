@@ -9,15 +9,30 @@ from django.urls import reverse
 
 from ads.models import Ad, Comment, Ad, Fav
 from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
-
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from ads.forms import CommentForm
 from ads.forms import CreateForm
+from django.db.models import Q
 
 class AdListView(OwnerListView):
     model = Ad
     template_name = "ads/ad_list.html"
 
     def get(self, request) :
+        if 'search' in request.GET:
+            strval =  request.GET.get("search", False)
+            print (strval)
+            if strval :
+                query = Q(title__contains=strval)
+                query.add(Q(text__contains=strval), Q.OR)
+                objects = Ad.objects.filter(query).select_related().order_by('-updated_at')[:10]
+            else :
+                objects = Ad.objects.all().order_by('-updated_at')[:10]
+            for obj in objects:
+                obj.natural_updated = naturaltime(obj.updated_at)
+            ctx = {'ad_list' : objects, 'search': strval}
+            return  render(request, self.template_name, ctx)
+
         ad_list = Ad.objects.all()
         favorites = list()
         if request.user.is_authenticated:
