@@ -24,8 +24,9 @@ from django.views.generic import TemplateView
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('', include('ads.urls')),  # Change to ads.urls
-    path('favs/', include('favs.urls')),  # Change to ads.urls
+    path('', include('ads.urls')), 
+    path('favs/', include('favs.urls')), 
+    path('well/', include('well.urls')),
     #path('', TemplateView.as_view(template_name='home/main.html')),
     path('admin/', admin.site.urls),  # Keep
     path('pics/', include('pics.urls')),

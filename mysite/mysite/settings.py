@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'ads.apps.AdsConfig',
     'favs.apps.FavsConfig',
     'pics.apps.PicsConfig',
+    'well.apps.WellConfig',
     'unesco.apps.UnescoConfig',  # Add
 ]
 
